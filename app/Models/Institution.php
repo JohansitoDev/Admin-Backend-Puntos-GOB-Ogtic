@@ -1,1 +1,36 @@
-<?php namespace App\Models; use Illuminate\Database\Eloquent\Factories\HasFactory; use Illuminate\Database\Eloquent\Model; class Institution extends Model { use HasFactory; protected $fillable = ['name', 'phone', 'institutional_email', 'contact_person_name', 'status',]; public function users() { return $this->hasMany(User::class); } public function services() { return $this->hasMany(Service::class); } public function puntoGobs() { return $this->belongsToMany(PuntoGOB::class, 'institution_punto_gob'); } }
+<?php 
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model; 
+
+class Institution extends Model 
+{ 
+    use HasFactory; 
+
+    protected $fillable = [
+        'name', 
+        'phone', 
+        'institutional_email', 
+        'contact_person_name', 
+        'status',
+    ];
+
+    public function users() 
+    { 
+        return $this->hasMany(User::class); 
+    } 
+
+    public function services() 
+    { 
+        return $this->hasMany(Service::class); 
+    } 
+    
+    public function puntoGobs() 
+    { 
+        
+        return $this->belongsToMany(PuntoGOB::class, 'institution_punto_gob', 'institution_id', 'punto_gob_id'); 
+    } 
+}
+

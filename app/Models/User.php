@@ -1,1 +1,14 @@
-<?php namespace App\Models; use Illuminate\Contracts\Auth\MustVerifyEmail; use Illuminate\Database\Eloquent\Factories\HasFactory; use Illuminate\Foundation\Auth\User as Authenticatable; use Illuminate\Notifications\Notifiable; use Laravel\Sanctum\HasApiTokens; class User extends Authenticatable { use HasApiTokens, HasFactory, Notifiable; protected $fillable = ['first_name', 'last_name', 'email', 'password', 'identification_number', 'sex', 'role', 'institution_id', 'punto_gob_id', 'is_active', 'last_login_at',]; protected $hidden = ['password', 'remember_token',]; protected $casts = ['email_verified_at' => 'datetime', 'password' => 'hashed', 'last_login_at' => 'datetime', 'is_active' => 'boolean',]; public function isSuperAdmin() { return $this->role === 'SuperAdmin'; } public function isAdmin() { return $this->role === 'Admin'; } public function isCitizen() { return $this->role === 'Citizen'; } public function institution() { return $this->belongsTo(Institution::class); } public function puntoGob() { return $this->belongsTo(PuntoGOB::class, 'punto_gob_id'); } public function createdSupportTickets() { return $this->hasMany(SupportTicket::class, 'user_id'); } public function assignedSupportTickets() { return $this->hasMany(SupportTicket::class, 'assigned_to_user_id'); } public function activityLogs() { return $this->hasMany(ActivityLog::class); } }
+<?php namespace App\Models;
+ use Illuminate\Contracts\Auth\MustVerifyEmail;
+ use Illuminate\Database\Eloquent\Factories\HasFactory;
+  use Illuminate\Foundation\Auth\User as Authenticatable;
+   use Illuminate\Notifications\Notifiable; 
+   use Laravel\Sanctum\HasApiTokens; 
+   class User extends Authenticatable { use HasApiTokens, HasFactory, Notifiable; protected $fillable = ['first_name', 'last_name', 'email', 'password', 'identification_number', 'sex', 'role', 'institution_id', 'punto_gob_id', 'is_active', 'last_login_at',]; protected $hidden = ['password', 'remember_token',]; 
+    protected $casts = ['email_verified_at' => 'datetime','last_login_at' => 'datetime', 'is_active' => 'boolean',];
+     public function isSuperAdmin() { return $this->role === 'SuperAdmin'; } public function isAdmin() { return $this->role === 'Admin'; } public function isCitizen() { return $this->role === 'Citizen'; } public function institution() { return $this->belongsTo(Institution::class); } public function puntoGob() { return $this->belongsTo(PuntoGOB::class, 'punto_gob_id'); } public function createdSupportTickets() { return $this->hasMany(SupportTicket::class, 'user_id'); } public function assignedSupportTickets() { return $this->hasMany(SupportTicket::class, 'assigned_to_user_id');
+ } public function activityLogs() { return $this->hasMany(ActivityLog::class); } }
+
+
+//   'password' => 'hashed', 
+
