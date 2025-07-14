@@ -9,8 +9,7 @@ class PuntoGOB extends Model
 {
     use HasFactory;
 
-    // ¡Añade esta línea!
-    protected $table = 'punto_gobs'; // Especifica el nombre exacto de la tabla
+    protected $table = 'punto_gobs'; 
 
     protected $fillable = [
         'name',
@@ -30,3 +29,5 @@ class PuntoGOB extends Model
         return $this->hasMany(Service::class);
     }
 }
+
+
