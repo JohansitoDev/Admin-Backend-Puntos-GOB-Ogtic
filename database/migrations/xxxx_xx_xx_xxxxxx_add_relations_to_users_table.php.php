@@ -8,9 +8,9 @@ return new class extends Migration
 {
     public function up(): void
     {
-        // ¡IMPORTANTE! Debe ser Schema::table, no Schema::create
+        
         Schema::table('users', function (Blueprint $table) {
-            // Añadir las columnas solo si no existen para evitar errores en fresh
+           
             if (!Schema::hasColumn('users', 'institution_id')) {
                 $table->foreignId('institution_id')->nullable()->constrained('institutions')->onDelete('set null')->after('role');
             }
@@ -23,7 +23,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            // Eliminar las claves foráneas primero antes de eliminar las columnas
+         
             if (Schema::hasColumn('users', 'institution_id')) {
                 $table->dropForeign(['institution_id']);
                 $table->dropColumn('institution_id');

@@ -70,3 +70,4 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('appointments/export-pdf', [ReportController::class, 'exportAdminAppointmentsPdf']); 
     });
 });
+

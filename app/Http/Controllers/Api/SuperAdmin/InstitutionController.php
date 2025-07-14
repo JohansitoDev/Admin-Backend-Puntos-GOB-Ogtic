@@ -4,18 +4,17 @@ namespace App\Http\Controllers\Api\SuperAdmin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Institution;
-use App\Models\PuntoGOB; // Asegúrate de importar el modelo PuntoGOB
+use App\Models\PuntoGOB; 
 use Illuminate\Http\Request;
-use App\Http\Resources\InstitutionResource; // Asegúrate de que este recurso exista
-use Illuminate\Support\Facades\Gate; // Para usar Gates de autorización
-use Illuminate\Validation\ValidationException; // Para manejar errores de validación
+use App\Http\Resources\InstitutionResource; 
+use Illuminate\Support\Facades\Gate; 
+use Illuminate\Validation\ValidationException; 
 
 class InstitutionController extends Controller
 {
     public function __construct()
     {
-        // Aplica el Gate 'manage-all' a todas las acciones de este controlador.
-        // Esto asegura que solo los SuperAdmins puedan acceder a estas rutas.
+        
         $this->middleware('can:manage-all');
     }
 
@@ -47,11 +46,10 @@ class InstitutionController extends Controller
      */
     public function index()
     {
-        // Recupera todas las instituciones y carga sus relaciones de PuntoGOB
-        // El 'with' es importante para evitar el problema de N+1 consultas
+       
         $institutions = Institution::with('puntoGobs')->get();
 
-        // Retorna la colección de instituciones usando el InstitutionResource
+        
         return InstitutionResource::collection($institutions);
     }
 
@@ -100,27 +98,26 @@ class InstitutionController extends Controller
      */
     public function store(Request $request)
     {
-        // Validar los datos de entrada.
-        // Laravel automáticamente devuelve una respuesta 422 si la validación falla.
+       
         $request->validate([
             'name' => 'required|string|max:255|unique:institutions,name',
             'phone' => 'nullable|string|max:50',
             'institutional_email' => 'nullable|email|max:255',
             'contact_person_name' => 'nullable|string|max:255',
             'status' => 'required|in:Activo,Inactivo,Pendiente',
-            'punto_gob_ids' => 'array', // Debe ser un array de IDs
-            'punto_gob_ids.*' => 'exists:punto_gobs,id', // Cada ID debe existir en la tabla punto_gobs
+            'punto_gob_ids' => 'array', 
+            'punto_gob_ids.*' => 'exists:punto_gobs,id', 
         ]);
 
-        // Crear la nueva institución en la base de datos
+    
         $institution = Institution::create($request->all());
 
-        // Si se proporcionaron IDs de Puntos GOB, asociarlos a la institución
+        
         if ($request->has('punto_gob_ids')) {
             $institution->puntoGobs()->sync($request->punto_gob_ids);
         }
 
-        // Retornar la institución creada usando el InstitutionResource con un estado 201 (Created)
+        
         return new InstitutionResource($institution->load('puntoGobs'));
     }
 
@@ -160,8 +157,7 @@ class InstitutionController extends Controller
      */
     public function show(Institution $institution)
     {
-        // Laravel automáticamente inyecta la instancia de Institution si el ID de la ruta es válido.
-        // Carga los puntos GOB asociados para incluirlos en la respuesta.
+        
         return new InstitutionResource($institution->load('puntoGobs'));
     }
 
@@ -221,7 +217,7 @@ class InstitutionController extends Controller
     public function update(Request $request, Institution $institution)
     {
         $request->validate([
-            // La regla unique:institutions,name debe excluir la institución actual
+            
             'name' => 'required|string|max:255|unique:institutions,name,' . $institution->id,
             'phone' => 'nullable|string|max:50',
             'institutional_email' => 'nullable|email|max:255',
@@ -231,22 +227,18 @@ class InstitutionController extends Controller
             'punto_gob_ids.*' => 'exists:punto_gobs,id',
         ]);
 
-        // Actualizar los datos de la institución
+        
         $institution->update($request->all());
 
-        // Sincronizar las asociaciones con Puntos GOB
-        // sync() toma un array de IDs y asegura que solo esos IDs estén asociados.
-        // Si el array está vacío, desasocia todos.
+       
         if ($request->has('punto_gob_ids')) {
             $institution->puntoGobs()->sync($request->punto_gob_ids);
         } else {
-            // Si el campo 'punto_gob_ids' no se envía, desasocia todos los Puntos GOB
-            // Esto puede ser un comportamiento deseado o no, dependiendo del frontend.
-            // Si quieres que no haga nada si no se envía, quita este else.
+           
             $institution->puntoGobs()->detach();
         }
 
-        // Retornar la institución actualizada con sus Puntos GOB
+      
         return new InstitutionResource($institution->load('puntoGobs'));
     }
 
@@ -288,11 +280,10 @@ class InstitutionController extends Controller
      */
     public function destroy(Institution $institution)
     {
-        // Laravel automáticamente inyecta la instancia de Institution.
-        // La eliminación en cascada (onDelete('cascade')) en las migraciones
-        // se encargará de eliminar servicios asociados y entradas en la tabla pivote.
+     
         $institution->delete();
 
         return response()->json(['message' => 'Institución eliminada correctamente.'], 200);
     }
 }
+

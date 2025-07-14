@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('identification_number', 20)->unique()->nullable();
             $table->enum('sex', ['Masculino', 'Femenino']);
             $table->enum('role', ['SuperAdmin', 'Admin', 'Citizen'])->default('Citizen');
-            // NO PONGAS LAS CLAVES FORÁNEAS institution_id Y punto_gob_id AQUÍ
             $table->boolean('is_active')->default(true);
             $table->timestamp('last_login_at')->nullable();
             $table->rememberToken();
@@ -29,3 +28,4 @@ return new class extends Migration
         Schema::dropIfExists('users');
     }
 };
+
