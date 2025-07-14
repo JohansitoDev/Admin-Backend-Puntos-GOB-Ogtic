@@ -13,15 +13,18 @@ use App\Http\Controllers\Api\Admin\DashboardController as AdminDashboardControll
 use App\Http\Controllers\Api\Shared\ProfileController;
 use App\Http\Controllers\Api\Shared\SupportTicketController;
 use App\Http\Controllers\Api\Shared\HistoryController;
+use App\Http\Controllers\Controllers\ActivityLogController;
 use App\Http\Controllers\Api\Shared\ReportController;
 
+
+use App\Http\Controllers\Api\SuperAdmin\AppointmentDashboardController;
 
 
 Route::post('/login', [LoginController::class, 'login']);
 
 
 Route::middleware('auth:sanctum')->group(function () {
-   
+    
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
@@ -32,15 +35,15 @@ Route::middleware('auth:sanctum')->group(function () {
     
     Route::apiResource('support-tickets', SupportTicketController::class);
 
-   
+    
     Route::get('/history/appointments', [HistoryController::class, 'appointments']);
     Route::get('/activity-logs', [ActivityLogController::class, 'index']); 
 
     
     Route::middleware(['can:manage-all'])->prefix('superadmin')->name('superadmin.')->group(function () {
-     
+        
         Route::apiResource('institutions', InstitutionController::class);
-        Route::apiResource('punto-gobs', PuntoGOBController::class);
+        Route::apiResource('punto-gobs', PuntoGOBController::class); 
         Route::apiResource('users', SuperAdminUserController::class); 
         Route::apiResource('services', ServiceController::class);
 
@@ -52,6 +55,10 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('appointments', [AdminAppointmentController::class, 'indexForAll']); 
         Route::get('appointments/{appointment}', [AdminAppointmentController::class, 'showForAll']);
 
+      
+        Route::get('dashboard/external-appointments', [AppointmentDashboardController::class, 'getAppointments']);
+        Route::get('dashboard/external-summary', [AppointmentDashboardController::class, 'getSummary']);
+  
 
         Route::get('appointments/export-pdf', [ReportController::class, 'exportAppointmentsPdf']);
     });
@@ -70,4 +77,3 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('appointments/export-pdf', [ReportController::class, 'exportAdminAppointmentsPdf']); 
     });
 });
-
