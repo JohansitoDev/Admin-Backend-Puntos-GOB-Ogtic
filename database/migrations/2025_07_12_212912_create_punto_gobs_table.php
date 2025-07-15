@@ -4,10 +4,18 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration { 
     public function up(): void { Schema::create('punto_gobs', function (Blueprint $table) { $table->id(); 
         $table->string('name')->unique();
-         $table->string('location');
-         $table->string('capacity')->nullable(); 
+        $table->string('address')->nullable();
+        $table->string('phone')->nullable();
+        $table->string('email')->nullable()->unique();
+        $table->string('location');
+        $table->string('capacity')->nullable(); 
         $table->enum('status', ['Activo', 'Inactivo', 'Mantenimiento'])->default('Activo'); 
-        $table->timestamps(); }); } public function down(): void { Schema::dropIfExists('punto_gobs');
+         $table->foreignId('institution_id')->constrained()->onDelete('cascade');
+        $table->timestamps(); }); 
+    }
+    
+    public function down(): void { 
+        Schema::dropIfExists('punto_gobs');
          }
      };
 
