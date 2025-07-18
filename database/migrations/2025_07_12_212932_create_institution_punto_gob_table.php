@@ -6,23 +6,21 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
         Schema::create('institution_punto_gob', function (Blueprint $table) {
-            
-
-            $table->foreignId('institution_id')->constrained('institutions')->onDelete('cascade');
-            $table->foreignId('punto_gob_id')->constrained('punto_gobs')->onDelete('cascade');
-
-           
-            $table->primary(['institution_id', 'punto_gob_id']);
-
-            $table->timestamps(); 
+            $table->foreignId('institution_id')->constrained()->onDelete('cascade');
+            $table->foreignId('punto_gob_id')->constrained()->onDelete('cascade');
+            $table->primary(['institution_id', 'punto_gob_id']); // Clave primaria compuesta
         });
     }
 
- 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::dropIfExists('institution_punto_gob');

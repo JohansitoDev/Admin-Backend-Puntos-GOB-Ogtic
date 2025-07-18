@@ -40,6 +40,13 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        // ¡AÑADE ESTE BLOQUE PARA EL GUARD SANCTUM!
+        // Esto le dice a Laravel cómo autenticar usuarios con tokens de Sanctum.
+        'sanctum' => [
+            'driver' => 'sanctum',
+            'provider' => 'users',
+        ],
     ],
 
     /*

@@ -174,6 +174,14 @@ return [
      */
     // 'wildcard_permission' => Spatie\Permission\WildcardPermission::class,
 
+    /*
+     * Define the default guard for roles and permissions.
+     * Default: 'web'
+     */
+    'defaults' => [ // <--- ¡Esta sección es la que debes asegurar que esté así!
+        'guard' => 'sanctum',
+    ],
+
     /* Cache-specific settings */
 
     'cache' => [

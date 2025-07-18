@@ -8,25 +8,23 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::table('permissions', function (Blueprint $table) {
-            //
+            // Añade la columna 'description' como string y que sea anulable
+            $table->string('description')->nullable()->after('guard_name');
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         Schema::table('permissions', function (Blueprint $table) {
-            //
+            // Elimina la columna 'description' si se revierte la migración
+            $table->dropColumn('description');
         });
     }
 };

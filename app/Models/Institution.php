@@ -11,10 +11,14 @@ class Institution extends Model
 
     protected $fillable = [
         'name', 
+        'slug',
         'phone', 
         'institutional_email', 
         'contact_person_name', 
         'status',
+        'is_active', 
+        'description',
+         'is_active',
     ];
 
     public function users() 

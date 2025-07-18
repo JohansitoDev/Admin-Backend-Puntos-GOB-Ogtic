@@ -30,7 +30,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/profile', [ProfileController::class, 'update']);
     Route::put('/profile/password', [ProfileController::class, 'changePassword']); 
 
-    
+        
     Route::apiResource('support-tickets', SupportTicketController::class);
 
     

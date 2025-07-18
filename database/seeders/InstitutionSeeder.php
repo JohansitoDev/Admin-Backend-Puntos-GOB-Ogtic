@@ -6,7 +6,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Service;    
 use App\Models\Institution;
 
-class ServiceSeeder extends Seeder
+class InstitutionSeeder extends Seeder
 {
     /**
 
