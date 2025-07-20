@@ -6,17 +6,15 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StorePuntoGOBRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
+    /**.
      */
     public function authorize(): bool
     {
-        // Autoriza si el usuario tiene el permiso 'manage-all' o 'manage-punto-gobs'
+        
         return $this->user()->can('manage-all') || $this->user()->can('manage-punto-gobs');
     }
 
     /**
-     * Get the validation rules that apply to the request.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
      */

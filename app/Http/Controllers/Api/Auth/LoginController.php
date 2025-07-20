@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth; 
-use Illuminate\Validation\ValidationException; // Importa la excepción de validación
+use Illuminate\Validation\ValidationException; 
 
 class LoginController extends Controller
 {
@@ -26,7 +26,7 @@ class LoginController extends Controller
         if (! Auth::attempt($request->only('email', 'password'))) {
  
             throw ValidationException::withMessages([
-                'email' => [trans('auth.failed')], // Mensaje de error de Laravel (config/auth.php)
+                'email' => [trans('auth.failed')], 
             ]);
         }
 

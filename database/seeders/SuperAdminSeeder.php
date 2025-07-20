@@ -85,7 +85,7 @@ class SuperAdminSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'identification_number' => '000-0000000-2',
                 'sex' => 'Masculino',
-                // 'role' => 'Citizen', // Esta línea ya no es necesaria
+                // 'role' => 'Citizen',
                 'is_active' => true,
             ]
         );
