@@ -8,12 +8,6 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log; 
 use Illuminate\Support\Facades\Gate; 
 
-/**
- * @OA\Tag(
- * name="SuperAdmin - Citas y Dashboard",
- * description="Consulta de Citas y Datos Agregados para el Dashboard de Puntos GOB"
- * )
- */
 class AppointmentDashboardController extends Controller
 {
     protected $citasApiUrl;
@@ -34,39 +28,7 @@ class AppointmentDashboardController extends Controller
         }
     }
 
-    /**
-     * @OA\Get(
-     * path="/api/superadmin/dashboard/appointments",
-     * operationId="getAppointmentsForDashboard",
-     * tags={"SuperAdmin - Citas y Dashboard"},
-     * summary="Obtener lista de citas para el dashboard",
-     * description="Consulta el backend de citas (API del ciudadano) para obtener una lista de citas. Permite filtrar por institución, punto GOB y fecha.",
-     * security={{"sanctum": {}}},
-     * @OA\Parameter(name="institution_id", in="query", required=false, @OA\Schema(type="integer"), description="Filtrar citas por ID de institución."),
-     * @OA\Parameter(name="punto_gob_id", in="query", required=false, @OA\Schema(type="integer"), description="Filtrar citas por ID de Punto GOB."),
-     * @OA\Parameter(name="date", in="query", required=false, @OA\Schema(type="string", format="date", example="2025-07-14"), description="Filtrar citas por fecha (YYYY-MM-DD)."),
-     * @OA\Response(
-     * response=200,
-     * description="Lista de citas obtenida exitosamente desde la API de citas.",
-     * @OA\JsonContent(
-     * type="array",
-     * @OA\Items(
-     * @OA\Property(property="appointment_id", type="string", description="ID único de la cita en el sistema de citas."),
-     * @OA\Property(property="citizen_name", type="string", description="Nombre del ciudadano."),
-     * @OA\Property(property="date", type="string", format="date", description="Fecha de la cita."),
-     * @OA\Property(property="time", type="string", format="time", description="Hora de la cita."),
-     * @OA\Property(property="institution_name", type="string", description="Nombre de la institución de la cita."),
-     * @OA\Property(property="punto_gob_name", type="string", description="Nombre del Punto GOB de la cita."),
-     * @OA\Property(property="service_name", type="string", description="Nombre del servicio de la cita."),
-     * @OA\Property(property="status", type="string", description="Estado actual de la cita (ej. 'pending', 'confirmed', 'cancelled', 'completed').")
-     * )
-     * )
-     * ),
-     * @OA\Response(response=401, description="No autenticado."),
-     * @OA\Response(response=403, description="Acceso denegado (el usuario no tiene el permiso 'view-dashboard-data')."),
-     * @OA\Response(response=500, description="Error de configuración o comunicación con la API de citas.")
-     * )
-     */
+  
     public function getAppointments(Request $request)
     {
       
@@ -90,21 +52,6 @@ class AppointmentDashboardController extends Controller
             
             $appointments = $response->json();
 
-            /*
-            $transformedAppointments = collect($appointments)->map(function ($appointment) {
-                return [
-                    'appointment_id' => $appointment['uuid'] ?? $appointment['id'],
-                    'citizen_name' => $appointment['user']['full_name'] ?? 'Ciudadano Desconocido',
-                    'date' => $appointment['scheduled_date'],
-                    'time' => $appointment['scheduled_time'],
-                    'institution_name' => $appointment['service_provider']['institution']['name'] ?? 'N/A',
-                    'punto_gob_name' => $appointment['service_provider']['punto_gob']['name'] ?? 'N/A',
-                    'service_name' => $appointment['service']['name'] ?? 'Servicio Desconocido',
-                    'status' => $appointment['status'],
-                ];
-            })->toArray();
-            return response()->json($transformedAppointments);
-            */
 
             return response()->json($appointments); 
 
@@ -121,33 +68,7 @@ class AppointmentDashboardController extends Controller
         }
     }
 
-    /**
-     * @OA\Get(
-     * path="/api/superadmin/dashboard/summary",
-     * operationId="getDashboardSummary",
-     * tags={"SuperAdmin - Citas y Dashboard"},
-     * summary="Obtener resumen para el dashboard",
-     * description="Retorna datos agregados para el dashboard (ej. conteo de citas por estado, por institución, etc.).",
-     * security={{"sanctum": {}}},
-     * @OA\Parameter(name="period", in="query", required=false, @OA\Schema(type="string", enum={"day", "week", "month", "year"}, default="day"), description="Período de tiempo para el resumen (day, week, month, year)."),
-     * @OA\Response(
-     * response=200,
-     * description="Resumen de datos del dashboard obtenido exitosamente.",
-     * @OA\JsonContent(
-     * @OA\Property(property="total_appointments", type="integer", example=150, description="Total de citas en el período."),
-     * @OA\Property(property="pending_appointments", type="integer", example=50, description="Citas con estado pendiente."),
-     * @OA\Property(property="completed_appointments", type="integer", example=80, description="Citas completadas."),
-     * @OA\Property(property="cancelled_appointments", type="integer", example=20, description="Citas canceladas."),
-     * @OA\Property(property="appointments_by_institution", type="object", example={"Ministerio A": 75, "Ministerio B": 75}, description="Conteo de citas por institución."),
-     * @OA\Property(property="appointments_by_service", type="object", example={"Renovación Cédula": 60, "Pasaporte Nuevo": 40}, description="Conteo de citas por servicio."),
-     * @OA\Property(property="appointments_by_punto_gob", type="object", example={"Punto GOB Centro": 80, "Punto GOB Sur": 70}, description="Conteo de citas por Punto GOB.")
-     * )
-     * ),
-     * @OA\Response(response=401, description="No autenticado."),
-     * @OA\Response(response=403, description="Acceso denegado."),
-     * @OA\Response(response=500, description="Error al generar el resumen del dashboard.")
-     * )
-     */
+
     public function getSummary(Request $request)
     {
       
@@ -174,19 +95,7 @@ class AppointmentDashboardController extends Controller
         ];
 
         
-        /*
-        $period = $request->input('period', 'day'); // 'day', 'week', 'month', 'year'
-        $startDate = null;
-        
-
-        $response = Http::withHeaders(['Accept' => 'application/json'])->get($this->citasApiUrl . '/appointments', [
-            'start_date' => $startDate ? $startDate->toDateString() : null,
-          
-        ]);
-
-        $appointments = $response->json();
-        
-        */
+    
 
         return response()->json($summary);
     }
