@@ -3,23 +3,17 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule; 
+use Illuminate\Validation\Rule;
 
 class UpdatePuntoGOBRequest extends FormRequest
 {
-  
     public function authorize(): bool
     {
-       
         return $this->user()->can('manage-all') || $this->user()->can('manage-punto-gobs');
     }
 
-    /**
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array|string>
-     */
     public function rules(): array
     {
-      
         $puntoGobId = $this->route('punto_gob') ? $this->route('punto_gob')->id : null;
 
         return [
@@ -27,7 +21,7 @@ class UpdatePuntoGOBRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('punto_gobs')->ignore($puntoGobId), 
+                Rule::unique('punto_gobs')->ignore($puntoGobId),
             ],
             'address' => 'nullable|string|max:255',
             'phone' => 'nullable|string|max:20',
@@ -39,25 +33,17 @@ class UpdatePuntoGOBRequest extends FormRequest
                 Rule::unique('punto_gobs')->ignore($puntoGobId),
             ],
             'is_active' => 'boolean',
-            'institution_id' => 'required|exists:institutions,id',
+     
         ];
     }
 
-    /**
-
-     * @return array<string, string>
-     */
     public function messages(): array
     {
         return [
             'name.unique' => 'Ya existe un Punto GOB con este nombre.',
             'name.required' => 'El nombre del Punto GOB es obligatorio.',
             'email.unique' => 'Este correo electrónico ya está en uso por otro Punto GOB.',
-            'institution_id.required' => 'La institución es obligatoria para el Punto GOB.',
-            'institution_id.exists' => 'La institución seleccionada no existe.',
+ 
         ];
     }
 }
-
-
-
