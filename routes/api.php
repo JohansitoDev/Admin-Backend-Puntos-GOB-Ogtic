@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActivityLogController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\Auth\LoginController;
@@ -13,7 +14,6 @@ use App\Http\Controllers\Api\Admin\DashboardController as AdminDashboardControll
 use App\Http\Controllers\Api\Shared\ProfileController;
 use App\Http\Controllers\Api\Shared\SupportTicketController;
 use App\Http\Controllers\Api\Shared\HistoryController;
-use App\Http\Controllers\Controllers\ActivityLogController; 
 use App\Http\Controllers\Api\Shared\ReportController;
 use App\Http\Controllers\Api\SuperAdmin\AppointmentDashboardController;
 use App\Http\Controllers\Api\Admin\PuntoGOBInstitutionController; 
